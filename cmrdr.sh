@@ -6,9 +6,10 @@ OUTPUT=$2
 IFS=$'\n'
 set -f
 if [[ $OUTPUT != "" ]]; then
+    echo -n "" > $OUTPUT
     for i in $TARGETS; do
         echo 'Attacking '$i'...'
-       $GOPATH/bin/cameradar run -t $i |& tee $OUTPUT
+       $GOPATH/bin/cameradar run -t $i |& tee -a $OUTPUT
     done
 else
     for i in $TARGETS; do
