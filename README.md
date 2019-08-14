@@ -1,6 +1,6 @@
 # Cameradar File Tool
 
-## Example file formatting
+## Example file content
 ```
 123.456.789.123
 345.567.978.098
