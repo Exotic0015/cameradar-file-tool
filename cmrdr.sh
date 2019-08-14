@@ -10,6 +10,9 @@ if [[ $OUTPUT != "" ]]; then
     for i in $TARGETS; do
         echo 'Attacking '$i'...'
        $GOPATH/bin/cameradar run -t $i |& tee -a $OUTPUT
+       awk "!/  > Perform failed: curl: Failure when receiving data from the peer/" $OUTPUT > temp && mv temp $OUTPUT
+       awk "!/  > Perform failed: curl: Couldn't connect to server/" $OUTPUT > temp && mv temp $OUTPUT
+       awk "!/  > Perform failed: curl: Timeout was reached/" $OUTPUT > temp && mv temp $OUTPUT
     done
 else
     for i in $TARGETS; do
