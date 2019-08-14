@@ -1,6 +1,15 @@
 #!/bin/bash
 # Written by Exotic#1124
 echo 'If there is an error or nothing happens, make sure you specified a valid file and GOPATH is set.'
+exitfn () {
+    trap SIGINT
+    echo -e '\nExiting...'
+    awk "!/  > Perform failed: curl: Failure when receiving data from the peer/" $OUTPUT > temp && mv temp $OUTPUT
+    awk "!/  > Perform failed: curl: Couldn't connect to server/" $OUTPUT > temp && mv temp $OUTPUT
+    awk "!/  > Perform failed: curl: Timeout was reached/" $OUTPUT > temp && mv temp $OUTPUT
+    exit
+}
+trap "exitfn" INT
 TARGETS="`cat $1`"
 OUTPUT=$2
 IFS=$'\n'
@@ -20,3 +29,4 @@ else
        $GOPATH/bin/cameradar run -t $i
     done
 fi
+trap SIGINT
