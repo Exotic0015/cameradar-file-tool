@@ -1,6 +1,11 @@
 # Cameradar File Tool
 
-## Example file content
+### Usage
+```
+./cmrdr.sh ip_list output_filename(optional)
+```
+
+### Example IP list file content
 ```
 123.456.789.123
 345.567.978.098
