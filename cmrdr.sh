@@ -27,7 +27,7 @@ while getopts ":f:o:" argument; do
             OUTPUT=${OPTARG}
             ;;
         ?)
-            echo "Usage: $0 [-f iplist_filename] [-o output_filename]" >&2
+            echo "Usage: $0 [-f iplist_filename] [-o output_filename (optional)]" >&2
             exit 1
             ;;
     esac

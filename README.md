@@ -2,7 +2,7 @@
 
 ### Usage
 ```
-./cmrdr.sh ip_list output_filename(optional)
+./cmrdr.sh [-f iplist_filename] [-o output_filename (optional)]
 ```
 
 ### Example IP list file content
