@@ -14,11 +14,12 @@ exitfn () {
 trap "exitfn" INT
 # Variables
 OPTIND=1
+LEVEL=${LEVEL:-3}
 OUTPUT=""
 IFS=$'\n'
 set -f
 # Code
-while getopts ":f:o:" argument; do
+while getopts ":f:o:s:" argument; do
     case "${argument}" in
         f)
             TARGETS="`cat ${OPTARG}`"
@@ -26,8 +27,11 @@ while getopts ":f:o:" argument; do
         o)
             OUTPUT=${OPTARG}
             ;;
+        s)
+            LEVEL=${OPTARG}
+            ;;
         ?)
-            echo "Usage: $0 [-f iplist_filename] [-o output_filename (optional)]" >&2
+            echo "Usage: $0 [-f iplist_filename] [-o output_filename (optional)] [-s 0-5 (optional, default=3)]" >&2
             exit 1
             ;;
     esac
@@ -36,16 +40,16 @@ shift $((OPTIND-1))
 if [[ $OUTPUT != "" ]]; then
     echo -n "" > $OUTPUT
     for i in $TARGETS; do
-       echo 'Attacking '$i'...'
-       $GOPATH/bin/cameradar run -t $i |& tee -a $OUTPUT
+       echo 'Attacking '$i' with level '$LEVEL' speed...'
+       $GOPATH/bin/cameradar run -t $i -s $LEVEL |& tee -a $OUTPUT
        awk "!/  > Perform failed: curl: Failure when receiving data from the peer/" $OUTPUT > temp && mv temp $OUTPUT
        awk "!/  > Perform failed: curl: Couldn't connect to server/" $OUTPUT > temp && mv temp $OUTPUT
        awk "!/  > Perform failed: curl: Timeout was reached/" $OUTPUT > temp && mv temp $OUTPUT
     done
 else
     for i in $TARGETS; do
-        echo 'Attacking '$i'...'
-       $GOPATH/bin/cameradar run -t $i
+        echo 'Attacking '$i' with level '$LEVEL' speed...'
+       $GOPATH/bin/cameradar run -t $i -s $LEVEL
     done
 fi
 # End
