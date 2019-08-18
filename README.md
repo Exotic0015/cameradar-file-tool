@@ -11,6 +11,7 @@ MAIN OPTIONS
     -f <iplist file location>: Specify an IP list file location [required]
     -o <output file location>: Specify a location for a newly created output file [optional]
     -s <speed number>: Specify a speed number (0-5, default=3) [optional]
+EXTRAS
     -h: Display the help message
 ```
 

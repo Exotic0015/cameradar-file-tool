@@ -16,13 +16,14 @@ OUTPUT=${OUTPUT:-""}
 IFS=$'\n'
 set -f
 help() {
-    echo -e "Usage: $0 [Options]"
-    echo -e " req=required, opt=optional"
-    echo -e "MAIN OPTIONS"
-    echo -e " -f <iplist file location>: Specify an IP list file location [req]"
-    echo -e " -o <output file location>: Specify a location for a newly created output file [opt]"
-    echo -e " -s <speed number>: Specify a speed number (0-5, default=3) [opt]"
-    echo -e " -h: Display this help message"
+    echo "Usage: $0 [Options]"
+    echo " req=required, opt=optional"
+    echo "MAIN OPTIONS"
+    echo " -f <iplist file location>: Specify an IP list file location [req]"
+    echo " -o <output file location>: Specify a location for a newly created output file [opt]"
+    echo " -s <speed number>: Specify a speed number (0-5, default=3) [opt]"
+    echo "EXTRAS"
+    echo " -h: Display this help message"
 }
 unset name
 while getopts ":f:o:s:h" argument; do
