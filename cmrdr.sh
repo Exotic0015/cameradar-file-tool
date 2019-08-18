@@ -1,6 +1,4 @@
 #!/bin/bash
-# Written by Exotic#1124
-echo 'If there is an error or nothing happens, make sure you specified a valid file and GOPATH is set.'
 exitfn () {
     trap SIGINT
     echo -e '\nInterrupt detected!\nExiting...'
@@ -12,14 +10,22 @@ exitfn () {
     exit 1
 }
 trap "exitfn" INT
-# Variables
 OPTIND=1
 LEVEL=${LEVEL:-3}
-OUTPUT=""
+OUTPUT=${OUTPUT:-""}
 IFS=$'\n'
 set -f
-# Code
-while getopts ":f:o:s:" argument; do
+help() {
+    echo -e "Usage: $0 [Options]"
+    echo -e " req=required, opt=optional"
+    echo -e "MAIN OPTIONS"
+    echo -e " -f <iplist file location>: Specify an IP list file location [req]"
+    echo -e " -o <output file location>: Specify a location for a newly created output file [opt]"
+    echo -e " -s <speed number>: Specify a speed number (0-5, default=3) [opt]"
+    echo -e " -h: Display this help message"
+}
+unset name
+while getopts ":f:o:s:h" argument; do
     case "${argument}" in
         f)
             TARGETS="`cat ${OPTARG}`"
@@ -30,13 +36,25 @@ while getopts ":f:o:s:" argument; do
         s)
             LEVEL=${OPTARG}
             ;;
+        h)
+            help
+            exit 1
+            ;;
         ?)
-            echo "Usage: $0 [-f iplist_filename] [-o output_filename (optional)] [-s 0-5 (optional, default=3)]" >&2
+            echo "Usage: $0 [Options]" >&2
+            echo -e "\nFor a full list of commands please use $0 -h"
             exit 1
             ;;
     esac
 done
+if [ -z "$name" ]
+then
+    echo "Usage: $0 [Options]" >&2
+    echo -e "\nFor a full list of commands please use $0 -h"
+    exit 1
+fi
 shift $((OPTIND-1))
+echo 'If there is an error or nothing happens, make sure you specified a valid ip list file and GOPATH is set.'
 if [[ $OUTPUT != "" ]]; then
     echo -n "" > $OUTPUT
     for i in $TARGETS; do
@@ -52,5 +70,4 @@ else
        $GOPATH/bin/cameradar run -t $i -s $LEVEL
     done
 fi
-# End
 trap SIGINT

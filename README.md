@@ -2,7 +2,16 @@
 
 ### Usage
 ```
-./cmrdr.sh [-f iplist_filename] [-o output_filename (optional)] [-s 0-5 (optional, default=3)]
+./cmrdr.sh [Options]
+```
+
+### Options
+```
+MAIN OPTIONS
+    -f <iplist file location>: Specify an IP list file location [required]
+    -o <output file location>: Specify a location for a newly created output file [optional]
+    -s <speed number>: Specify a speed number (0-5, default=3) [optional]
+    -h: Display the help message
 ```
 
 ### Example IP list file content
