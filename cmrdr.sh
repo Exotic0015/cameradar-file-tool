@@ -29,7 +29,7 @@ cleanup() {
     awk "!/  > Perform failed: curl: Couldn't connect to server/" $OUTPUT > temp && mv temp $OUTPUT
     awk "!/  > Perform failed: curl: Timeout was reached/" $OUTPUT > temp && mv temp $OUTPUT
 }
-if [[ ! $@ =~ ^\-.+ ]] then
+if [[ ! $@ =~ ^\-.+ ]]; then
     help
 fi
 while getopts ":f:o:s:h" argument; do
