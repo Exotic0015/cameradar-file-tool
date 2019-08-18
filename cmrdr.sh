@@ -3,16 +3,14 @@ exitfn () {
     trap SIGINT
     echo -e '\nInterrupt detected!\nExiting...'
     if [[ $OUTPUT != "" ]]; then
-        awk "!/  > Perform failed: curl: Failure when receiving data from the peer/" $OUTPUT > temp && mv temp $OUTPUT
-        awk "!/  > Perform failed: curl: Couldn't connect to server/" $OUTPUT > temp && mv temp $OUTPUT
-        awk "!/  > Perform failed: curl: Timeout was reached/" $OUTPUT > temp && mv temp $OUTPUT
+        cleanup
     fi
     exit 1
 }
 trap "exitfn" INT
 OPTIND=1
 LEVEL=${LEVEL:-3}
-OUTPUT=${OUTPUT:-""}
+OUTPUT=""
 IFS=$'\n'
 set -f
 help() {
@@ -25,7 +23,15 @@ help() {
     echo "EXTRAS"
     echo " -h: Display this help message"
 }
-unset name
+cleanup() {
+    cat $OUTPUT | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" > temp && mv temp $OUTPUT
+    awk "!/  > Perform failed: curl: Failure when receiving data from the peer/" $OUTPUT > temp && mv temp $OUTPUT
+    awk "!/  > Perform failed: curl: Couldn't connect to server/" $OUTPUT > temp && mv temp $OUTPUT
+    awk "!/  > Perform failed: curl: Timeout was reached/" $OUTPUT > temp && mv temp $OUTPUT
+}
+if [[ ! $@ =~ ^\-.+ ]] then
+    help
+fi
 while getopts ":f:o:s:h" argument; do
     case "${argument}" in
         f)
@@ -48,22 +54,14 @@ while getopts ":f:o:s:h" argument; do
             ;;
     esac
 done
-if [ -z "$name" ]
-then
-    echo "Usage: $0 [Options]" >&2
-    echo -e "\nFor a full list of commands please use $0 -h"
-    exit 1
-fi
 shift $((OPTIND-1))
 echo 'If there is an error or nothing happens, make sure you specified a valid ip list file and GOPATH is set.'
 if [[ $OUTPUT != "" ]]; then
     echo -n "" > $OUTPUT
     for i in $TARGETS; do
        echo 'Attacking '$i' with level '$LEVEL' speed...'
-       $GOPATH/bin/cameradar run -t $i -s $LEVEL |& tee -a $OUTPUT
-       awk "!/  > Perform failed: curl: Failure when receiving data from the peer/" $OUTPUT > temp && mv temp $OUTPUT
-       awk "!/  > Perform failed: curl: Couldn't connect to server/" $OUTPUT > temp && mv temp $OUTPUT
-       awk "!/  > Perform failed: curl: Timeout was reached/" $OUTPUT > temp && mv temp $OUTPUT
+       unbuffer $GOPATH/bin/cameradar run -t $i -s $LEVEL |& tee -a $OUTPUT
+       cleanup
     done
 else
     for i in $TARGETS; do
