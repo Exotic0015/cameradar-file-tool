@@ -28,6 +28,7 @@ cleanup() {
     awk "!/  > Perform failed: curl: Failure when receiving data from the peer/" $OUTPUT > temp && mv temp $OUTPUT
     awk "!/  > Perform failed: curl: Couldn't connect to server/" $OUTPUT > temp && mv temp $OUTPUT
     awk "!/  > Perform failed: curl: Timeout was reached/" $OUTPUT > temp && mv temp $OUTPUT
+    awk "!/  > Perform failed: curl: RTSP CSeq mismatch or invalid CSeq/" $OUTPUT > temp && mv temp $OUTPUT
 }
 if [[ ! $@ =~ ^\-.+ ]]; then
     help
