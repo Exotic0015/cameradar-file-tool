@@ -11,7 +11,10 @@ MAIN OPTIONS
     -f <iplist file location>: Specify an IP list file location [required]
     -o <output file location>: Specify a location for a newly created output file [optional]
     -s <speed number>: Specify a speed number (0-5, default=3) [optional]
+    -c <json file path>: Specify credentials json location (default=${GOPATH}/src/github.com/ullaakut/cameradar/dictionaries/credentials.json) [optional]
+    -r <json file path>: Specify routes json location (default=${GOPATH}/src/github.com/ullaakut/cameradar/dictionaries/routes) [optional]
 EXTRAS
+    -d: Enable debug logs
     -h: Display the help message
 ```
 
