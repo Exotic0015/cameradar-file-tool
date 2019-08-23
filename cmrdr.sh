@@ -9,7 +9,7 @@ exitfn () {
 }
 trap "exitfn" INT
 OPTIND=1
-LEVEL=3
+LEVEL=4
 CREDS="${GOPATH}/src/github.com/ullaakut/cameradar/dictionaries/credentials.json"
 ROUTES="${GOPATH}/src/github.com/ullaakut/cameradar/dictionaries/routes"
 OUTPUT=""
@@ -22,7 +22,7 @@ help() {
     echo "MAIN OPTIONS"
     echo " -f <iplist file path>: Specify an IP list file location [req]"
     echo " -o <output file path>: Specify a location for a newly created output file [opt]"
-    echo " -s <speed number>: Specify a speed number (0-5, default=3) [opt]"
+    echo " -s <speed number>: Specify a speed number (0-5, default=4) [opt]"
     echo " -c <json file path>: Specify credentials json location (default=${GOPATH}/src/github.com/ullaakut/cameradar/dictionaries/credentials.json) [opt]"
     echo " -r <json file path>: Specify routes json location (default=${GOPATH}/src/github.com/ullaakut/cameradar/dictionaries/routes) [opt]"
     echo "EXTRAS"
