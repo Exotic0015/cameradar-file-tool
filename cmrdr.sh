@@ -34,7 +34,7 @@ fi
 while getopts ":f:o:s:hc:dr:" argument; do
     case "${argument}" in
         f)
-            TARGETS="`cat ${OPTARG}`"
+            TARGETS=${OPTARG}
             ;;
         o)
             OUTPUT=${OPTARG}
@@ -63,17 +63,25 @@ while getopts ":f:o:s:hc:dr:" argument; do
     esac
 done
 shift $((OPTIND-1))
-echo 'If there is an error or nothing happens, make sure you specified a valid ip list file and GOPATH is set.'
+if [[ ! -f $TARGETS ]]; then
+    echo 'The IP list file is invalid'
+    exit 1
+elif [[ ! -s $TARGETS ]]; then
+    echo -e '\e[1m\e[91mThe IP list file is empty you idiot.'
+    exit 1
+else 
+    echo 'If there is an error or nothing happens, make sure you specified a valid ip list file and GOPATH is set.'
+fi
 if [[ $OUTPUT != "" ]]; then
     echo -n "" > $OUTPUT
-    for i in $TARGETS; do
+    for i in `cat $TARGETS`; do
        echo 'Attacking '$i' with level '$LEVEL' speed...'
        $GOPATH/bin/cameradar run -t $i -s $LEVEL -c $CREDS -d $DEBUG -r $ROUTES |& tee -a $OUTPUT
     done
 else
-    for i in $TARGETS; do
+    for i in `cat $TARGETS`; do
         echo 'Attacking '$i' with level '$LEVEL' speed...'
-       $GOPATH/bin/cameradar run -t $i -s $LEVEL -c $CREDS -d $DEBUG -r $ROUTES
+        $GOPATH/bin/cameradar run -t $i -s $LEVEL -c $CREDS -d $DEBUG -r $ROUTES
     done
 fi
 trap SIGINT
