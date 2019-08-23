@@ -2,9 +2,6 @@
 exitfn () {
     trap SIGINT
     echo -e '\nInterrupt detected!\nExiting...'
-    if [[ $OUTPUT != "" ]]; then
-        cleanup
-    fi
     exit 1
 }
 trap "exitfn" INT
@@ -28,9 +25,6 @@ help() {
     echo "EXTRAS"
     echo " -d: Enable debug logs"
     echo " -h: Display this help message"
-}
-cleanup() {
-    cat $OUTPUT | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" > temp && mv temp $OUTPUT
 }
 if [[ ! $@ =~ ^\-.+ ]]; then
     echo "Usage: $0 [Options]" >&2
@@ -74,8 +68,7 @@ if [[ $OUTPUT != "" ]]; then
     echo -n "" > $OUTPUT
     for i in $TARGETS; do
        echo 'Attacking '$i' with level '$LEVEL' speed...'
-       unbuffer $GOPATH/bin/cameradar run -t $i -s $LEVEL -c $CREDS -d $DEBUG -r $ROUTES |& tee -a $OUTPUT
-       cleanup
+       $GOPATH/bin/cameradar run -t $i -s $LEVEL -c $CREDS -d $DEBUG -r $ROUTES |& tee -a $OUTPUT
     done
 else
     for i in $TARGETS; do
