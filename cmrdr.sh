@@ -67,7 +67,7 @@ if [[ ! -f $TARGETS ]]; then
     echo 'The IP list file is invalid'
     exit 1
 elif [[ ! -s $TARGETS ]]; then
-    echo -e '\e[1m\e[91mThe IP list file is empty you idiot.'
+    echo -e '\e[1m\e[91mThe IP list file is empty.'
     exit 1
 else 
     echo 'If there is an error or nothing happens, make sure you specified a valid ip list file and GOPATH is set.'
