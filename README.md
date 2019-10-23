@@ -1,5 +1,8 @@
 # Cameradar File Tool
 
+### Requirements
+[Cameradar](https://github.com/ullaakut/cameradar)
+
 ### Usage
 ```
 ./cmrdr.sh [Options]
